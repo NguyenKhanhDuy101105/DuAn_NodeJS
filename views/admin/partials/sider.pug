@@ -1,0 +1,55 @@
+.sider.bg-dark.text-white.d-flex.flex-column.flex-shrink-0.p-3(style="height: 100%; min-height: calc(100vh - 73px);")
+  //- Bỏ hẳn position: fixed và width: 280px để sider co giãn theo đúng 3 cột đã chia ở layout cha
+
+  // Header của Sidebar (Logo hoặc Tên hệ thống)
+  a(href="/admin/dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none gap-2")
+    span.fs-4.fw-bold.text-uppercase.tracking-wider ADMIN PANEL
+  
+  hr.border-secondary
+
+  // Danh sách Menu Điều hướng
+  ul.nav.nav-pills.flex-column.mb-auto.gap-1
+    li.nav-item
+      a.nav-link.active.d-flex.align-items-center.gap-3.py-2.px-3(href=`${prefixAdmin}/dashboard` aria-current="page")
+        i.bi.bi-speedometer2
+        span Tổng quan
+    
+    li.nav-item
+      a.nav-link.text-white.d-flex.align-items-center.gap-3.py-2.px-3(href=`${prefixAdmin}/products`)
+        i.bi.bi-grid
+        span Quản lý sản phẩm
+        
+    li.nav-item
+      a.nav-link.text-white.d-flex.align-items-center.gap-3.py-2.px-3(href=`${prefixAdmin}/categories`)
+        i.bi.bi-folder
+        span Danh mục sản phẩm
+
+    li.nav-item
+      a.nav-link.text-white.d-flex.align-items-center.gap-3.py-2.px-3(href=`${prefixAdmin}/orders`)
+        i.bi.bi-cart-check
+        span Quản lý đơn hàng
+
+    li.nav-item
+      a.nav-link.text-white.d-flex.align-items-center.gap-3.py-2.px-3(href=`${prefixAdmin}/accounts`)
+        i.bi.bi-people
+        span Tài khoản Admin
+
+    li.nav-item
+      a.nav-link.text-white.d-flex.align-items-center.gap-3.py-2.px-3(href=`${prefixAdmin}/settings`)
+        i.bi.bi-gear
+        span Cài đặt hệ thống
+
+  hr.border-secondary
+
+  // Phần thông tin User Admin dưới đáy Sidebar
+  .dropdown
+    a(href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false")
+      img(src="https://github.com/mdo.png" alt="Admin" width="32" height="32" class="rounded-circle me-2")
+      strong ADMIN
+    ul.dropdown-menu.dropdown-menu-dark.text-small.shadow(aria-labelledby="dropdownUser")
+      li
+        a.dropdown-menu-item.dropdown-item(href=`${prefixAdmin}/profile`) Thông tin cá nhân
+      li
+        hr.dropdown-divider
+      li
+        a.dropdown-menu-item.dropdown-item.text-danger(href=`${prefixAdmin}/auth/logout`) Đăng xuất

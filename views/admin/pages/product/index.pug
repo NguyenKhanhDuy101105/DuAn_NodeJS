@@ -1,0 +1,106 @@
+extends ../../layouts/default.pug
+include ../../mixins/filterStatus.pug 
+include ../../mixins/search.pug 
+include ../../mixins/pagination.pug 
+include ../../mixins/form-change-multi.pug 
+include ../../mixins/filterDelete.pug 
+include ../../mixins/message-success.pug 
+block main
+  .row.justify-content-between.align-items-center.mb-4
+    .col-auto
+      h1.mb-0.fw-bold.text-dark Danh sách sản phẩm
+    .col-auto
+      a.btn.btn-outline-primary(href=`${prefixAdmin}/products/create` btn-create) + Thêm mới sản phẩm  
+
+  //- Hien thi thong bao
+  +message-success(5000)
+
+  .card.mb-4 
+    .card-header Trang thai xoa 
+    .card-body
+      .row
+        .col-6
+          +filterDelete(filterDelete)
+  .card.mb-4 
+    .card-header Bo loc va tim kiem 
+    .card-body
+      .row
+        .col-6
+          +filterStatus(filterStatus)
+        .col-6 
+          +search(keyword)
+
+  .card.shadow-sm.border-1.rounded-3
+    .card-body.p-0
+      //- Form thay doi trang thai nhieu san pham
+      +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+      
+      .table-responsive
+        table.table.table-hover.align-middle.mb-0(checkbox-multi)
+          thead.table-light
+            tr
+              th
+                input(type="checkbox" name="checkall") 
+              th(style="width: 80px;") STT
+              th(style="width: 120px;") Hình ảnh
+              th Tiêu đề
+              th Giá
+              th Vi tri
+              th Trạng thái
+              th(style="width: 150px;") Hành động
+
+          tbody
+            each item, index in products
+              tr
+                td 
+                  input(type="checkbox", name="id" value=item.id)
+                td.text-secondary #{index + 1}
+                td
+                  img(src=`${item.thumbnail}` alt=item.title class="img-thumbnail rounded" style="width: 80px; height: 50px; object-fit: cover;")
+                td.fw-semibold.text-muted #{item.title}
+                td.fw-medium #{item.price}$
+                td 
+                  input(type="number" value=item.position style="width: 60px;" min="1" name="position")
+                td
+                  if(item.status == "active")
+                    a.badge.bg-success.bg-opacity-25.text-success.px-2.py-1.rounded(href="javascript:;" data-status=item.status data-id=item.id button-chang-status) Hoat dong
+                  else 
+                    a.badge.bg-danger.bg-opacity-25.text-danger.px-2.py-1.rounded(href="javascript:;" data-status=item.status data-id=item.id button-chang-status) Dung hoat dong
+                td
+                  .d-flex.gap-1
+                    a.btn.btn-warning.btn-sm.text-white.px-2.py-1(href=`${prefixAdmin}/products/edit/${item.id}` button-edit) Sửa
+                    if(item.deleted == false)
+                      button.btn.btn-danger.btn-sm.px-2.py-1(data-id=item.id buttonDelete) Xóa
+                    a.btn.btn-dark.btn-sm.text-white.px-2.py-1(href=`${prefixAdmin}/products/detail/${item.id}` button-detail) Chi tiet
+                    if(item.deleted == true)
+                      button.btn.btn-primary.btn-sm.px-2.py-1(data-id=item.id button-restore) Khoi phuc
+  //- Giao dien phan phan trang
+  +pagination(pagination)
+  //- Form thay doi trang thai 1 san pham
+  form(
+      action=`` 
+      method="POST" 
+      id="form-change-status" 
+      data-path=`${prefixAdmin}/products/change-status`
+      ) 
+  //- Form de xoa san pham
+  form(
+      action=`` 
+      method="POST" 
+      id="form-delete-item" 
+      data-path=`${prefixAdmin}/products/delete`
+      ) 
+  //- Form de khoi phuc san pham
+  form(
+      action=`` 
+      method="POST" 
+      id="form-restore-item" 
+      data-path=`${prefixAdmin}/products/restore`
+      ) 
+
+  //- Nhung file js rieng xu ly chuyen trang thai san pham
+  script(src="/admin/js/product.js") 
+  
+  
+        
+  

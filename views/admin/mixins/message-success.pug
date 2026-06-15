@@ -1,0 +1,32 @@
+mixin message-success(time)
+  - if (messages.success)
+    //- Đổ bóng shadow, bo góc tròn rounded-3, cố định ở góc trên bên phải trang web
+    .alert.alert-success.alert-custom.position-fixed.top-0.end-0.m-3.shadow.rounded-3(
+      data-time=time 
+      show-alert
+      style="z-index: 9999; min-width: 300px; display: flex; align-items: center; justify-content: space-between;"
+    )
+      .d-flex.align-items-center.gap-2
+        //- Thêm một icon check cho chuyên nghiệp (nếu dự án dùng FontAwesome)
+        //- i.fas.fa-check-circle.fs-5
+        span.fw-medium #{messages.success}
+      
+      //- Sử dụng nút Close nguyên bản xịn sò của Bootstrap thay vì chữ X thường
+      button.btn-close(type="button" aria-label="Close" close-alert style="font-size: 0.8rem;")
+
+mixin message-error(time)
+  - if (messages.error)
+    //- Đổ bóng shadow, bo góc tròn rounded-3, cố định ở góc trên bên phải trang web
+    .alert.alert-danger.alert-custom.position-fixed.top-0.end-0.m-3.shadow.rounded-3(
+      data-time=time 
+      show-alert
+      style="z-index: 9999; min-width: 300px; display: flex; align-items: center; justify-content: space-between;"
+    )
+      .d-flex.align-items-center.gap-2
+        //- Thêm một icon check cho chuyên nghiệp (nếu dự án dùng FontAwesome)
+        //- i.fas.fa-check-circle.fs-5
+        span.fw-medium #{messages.error}
+      
+      //- Sử dụng nút Close nguyên bản xịn sò của Bootstrap thay vì chữ X thường
+      button.btn-close(type="button" aria-label="Close" close-alert style="font-size: 0.8rem;")
+

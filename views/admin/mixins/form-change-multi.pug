@@ -1,0 +1,24 @@
+mixin form-change-multi(path)
+    form.my-2.ms-2(
+      action=path 
+      method="POST"
+      form-change-multi
+      )
+        .d-flex.align-items-start.gap-2
+          .form-group.mb-0
+            select(name="type" class="form-control")
+              option(disable selected) == Chon hanh dong ==
+              option(value="active") Hoạt động
+              option(value="inactive") Dừng hoạt động
+              option(value="deleteAll") Xoa tat ca
+              option(value="changePosition") Thay doi vi tri
+          .form-group.mb-0
+            input(
+              type="text"
+              name="ids"
+              value=""
+              class="form-control"
+              placeholder="Danh sách ID..."
+            )
+          button(type="submit" class="btn btn-primary") Áp dụng
+          

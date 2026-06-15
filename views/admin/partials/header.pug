@@ -1,0 +1,15 @@
+header.header.bg-white.shadow-sm.px-4.py-3.border-bottom.sticky-top.w-100(style="z-index: 1030;")
+  // Flexbox căn giữa các phần tử cực kỳ gọn gàng
+  .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3
+    
+    // Khối chữ ADMIN/Logo bên trái
+    .inner-logo
+      a(href="/admin/dashboard" class="fs-4 fw-bold text-primary text-decoration-none tracking-wide") ADMIN
+          
+    // Khối Menu điều hướng hướng về bên phải
+    .inner-menu
+      ul.nav.nav-pills.align-items-center.gap-2.m-0.p-0
+        li.nav-item
+          a.nav-link.active.fw-semibold.px-3.py-2(href="/admin/dashboard" style="border-radius: 8px;") Tổng quan
+        li.nav-item
+          a.nav-link.text-dark.fw-semibold.px-3.py-2(href="/admin/products" style="border-radius: 8px;") Quản lý sản phẩm

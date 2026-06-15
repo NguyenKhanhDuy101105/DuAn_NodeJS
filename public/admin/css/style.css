@@ -1,0 +1,22 @@
+.alert-hidden {
+    display: none;
+}
+
+.close-alert {
+    cursor: pointer;
+}
+
+/* Trạng thái mặc định khi hiển thị */
+.alert-custom {
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Hiệu ứng khi bị ẩn: Vừa mờ dần vừa bay ngược lên trên */
+.alert-custom.alert-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-40px);
+}

@@ -1,0 +1,38 @@
+extends ../../layouts/default.pug 
+include ../../mixins/box-head.pug
+block main
+  .container.my-5
+    // Tiêu đề trang
+    .row.mb-4
+      .col-12.text-center
+        +box-head("Danh sách sản phẩm 2026")
+        p.text-muted Những mẫu kính mắt thời thượng và mới nhất năm 2026
+
+    // Vùng lưới hiển thị sản phẩm
+    .row.g-4
+      // Vòng lặp lấy dữ liệu đổ ra giao diện
+      each item in products 
+        // col-lg-3 (4 sản phẩm/hàng trên PC), col-md-4 (3 sản phẩm/hàng trên Tablet), col-6 (2 sản phẩm/hàng trên Điện thoại)
+        .col-lg-3.col-md-4.col-6
+          .card.h-100.shadow-sm.border-0.rounded-3.overflow-hidden.position-relative
+            // Thương hiệu gắn nhỏ ở góc
+            span.badge.bg-dark.position-absolute.top-0.start-0.m-2.small #{item.title}
+            
+            // Khối hình ảnh sản phẩm
+            .inner-image.bg-light.d-flex.align-items-center.justify-content-center(style="height: 220px; overflow: hidden;")
+              img.card-img-top(src=item.thumbnail alt=item.title style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;")
+
+            // Khối thông tin sản phẩm
+            .card-body.d-flex.flex-column.p-3
+              a(href=`products/detail/${item.slug}`).card-title.fs-6.fw-semibold.text-dark.line-clamp-2.mb-2(style="min-height: 44px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;") #{item.title}
+              
+              .mt-auto
+                // Giá cả
+                .d-flex.align-items-center.gap-2.mb-3
+                  span.text-danger.fw-bold.fs-5 #{item.price}
+                  if item.stock
+                    span.text-muted.text-decoration-line-through.small #{item.stock}
+                
+                // Nút tương tác
+                .d-grid
+                  a.btn.btn-outline-primary.btn-sm.rounded-pill.fw-semibold Xem chi tiết

@@ -1,0 +1,94 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.my-5
+    //- 1. Thanh điều hướng nhỏ (Breadcrumb) giúp người dùng biết mình đang ở đâu
+    nav(aria-label="breadcrumb").mb-4
+      ol.breadcrumb.bg-transparent.p-0.m-0
+        li.breadcrumb-item
+          a.text-decoration-none.text-secondary(href="/") Trang chủ
+        li.breadcrumb-item
+          a.text-decoration-none.text-secondary(href="/products") Sản phẩm
+        li.breadcrumb-item.active.text-dark.fw-semibold(aria-current="page") Chi tiết sản phẩm
+
+    //- 2. Khối nội dung chính chia làm 2 cột (Ảnh bên trái - Thông tin bên phải)
+    .row.g-5
+      //- Cột hiển thị hình ảnh sản phẩm lớn
+      .col-md-6
+        .card.border-0.shadow-sm.overflow-hidden.rounded-4.bg-light
+          if (product.thumbnail)
+            .ratio.ratio-1x1
+              img(
+                src=product.thumbnail 
+                alt=product.title 
+                style="object-fit: cover; width: 100%; height: 100%;"
+                class="img-fluid"
+              )
+          else
+            .ratio.ratio-1x1.d-flex.align-items-center.justify-content-center
+              span.text-muted Không có hình ảnh sản phẩm
+
+      //- Cột hiển thị thông tin, giá cả và nút mua hàng
+      .col-md-6.d-flex.flex-column.justify-content-between
+        div
+          //- Tiêu đề sản phẩm lớn và đậm
+          if (product.title)
+            h1.fw-bold.text-dark.mb-2.lh-sm #{product.title}
+
+          //- Đánh giá sao tượng trưng tăng độ tin cậy cho trang bán hàng
+          .d-flex.align-items-center.gap-2.mb-4
+            .text-warning.fs-5
+              span ★★★★☆
+            small.text-muted (4.8/5 điểm - 96 lượt đánh giá)
+
+          //- Khối hiển thị Giá tiền & Phần trăm giảm giá (Cực kỳ nổi bật)
+          .p-4.bg-light.rounded-4.mb-4
+            if (product.price)
+              //- Logic tính toán giá thực tế sau khi trừ đi % giảm giá
+              - var finalPrice = (product.price * (1 - (product.discountPercentage || 0) / 100)).toFixed(2)
+              
+              .d-flex.align-items-baseline.gap-3.flex-wrap
+                span.fs-1.fw-bold.text-danger $#{finalPrice}
+                
+                if (product.discountPercentage > 0)
+                  span.text-decoration-line-through.text-muted.fs-5 $#{product.price}
+                  span.badge.bg-danger.rounded-pill.px-2.py-1.small Giảm #{product.discountPercentage}%
+
+          //- Hiển thị tình trạng kho hàng
+          .mb-4
+            p.mb-1.fs-6
+              span.text-secondary Tình trạng: 
+              if (product.stock > 0)
+                span.text-success.fw-semibold Còn hàng (#{product.stock} sản phẩm sẵn có)
+              else
+                span.text-danger.fw-semibold Tạm thời hết hàng
+
+          //- Bộ tăng giảm số lượng mua hàng nhanh bằng JS thuần
+          if (product.stock > 0)
+            .mb-4
+              label.form-label.fw-medium.text-secondary(for="quantity") Số lượng mua:
+              .input-group.rounded-3(style="width: 140px;")
+                button.btn.btn-outline-secondary.px-3(type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()") -
+                input#quantity.form-control.text-center.fw-bold(type="number" value="1" min="1" max=product.stock name="quantity")
+                button.btn.btn-outline-secondary.px-3(type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()") +
+
+        //- 3. Các nút hành động kích thích mua hàng (Đẩy xuống dưới cùng cột phải)
+        .mt-4
+          if (product.stock > 0)
+            .row.g-3
+              .col-sm-6
+                button.btn.btn-outline-danger.btn-lg.w-100.py-3.rounded-3.fw-bold.fs-6(type="button" button-add-to-cart data-id=product.id)
+                  i.fas.fa-shopping-cart.me-2
+                  | Thêm vào giỏ hàng
+              .col-sm-6
+                button.btn.btn-danger.btn-lg.w-100.py-3.rounded-3.fw-bold.fs-6(type="button" button-buy-now data-id=product.id) Mua ngay
+          else
+            button.btn.btn-secondary.btn-lg.w-100.py-3.rounded-3.disabled(type="button") Liên hệ đặt trước
+
+    //- 4. Khối dưới cùng: Tab thông tin mô tả chi tiết sản phẩm
+    if (product.description)
+      .row.mt-5
+        .col-12
+          .card.border-0.bg-light.rounded-4.p-4.p-md-5
+            h3.fw-bold.text-dark.mb-4.border-bottom.pb-3 Mô tả chi tiết sản phẩm
+            p.text-secondary.lh-lg.fs-6.mb-0(style="white-space: pre-line;") #{product.description}
