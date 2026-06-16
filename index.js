@@ -3,6 +3,7 @@ const express = require("express");
 const methodOverride = require("method-override"); // Nhung cai ghi de phuong thuc POST
 const bodyParser = require("body-parser"); // Nhung cai de doc du lieu body Client gui request len
 const flash = require("express-flash"); // Nhung cai de hien thi thong bao sau khi chuyen huong
+const systemConfig = require("./config/system");
 
 const app = express(); // la toan bo chuong trinh
 const port = process.env.PORT; // cong
@@ -12,9 +13,9 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
 // 1. ĐẶT TOÀN BỘ CẤU HÌNH MIDDLEWARE LÊN TRÊN ĐẦU
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`); // __dirname là biến toàn cục của NodeJS, nó sẽ trả về đường dẫn tuyệt đối đến thư mục hiện tại của file đang chạy
 app.set("view engine", "pug");
-app.use(express.static("public")); // Cau lenh de public du lieu ra ngoai
+app.use(express.static(`${__dirname}/public`)); // Cau lenh de public du lieu ra ngoai
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded());
@@ -26,7 +27,6 @@ app.use(bodyParser.json());
 app.use(methodOverride("_method"));
 
 // Cấu hình biến toàn cục cho Pug dùng chung
-const systemConfig = require("./config/system");
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
 // Cau hinh Flash de hien thong bao
