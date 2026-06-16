@@ -204,11 +204,11 @@ module.exports.createPost = async (req, res) => {
   req.body.createAt = new Date();
   // Khi dung multer them hinh anh cho san pham thi
   // no tu them thuoc tinh file cho req
-  console.log(req.file);
-  if (req.file) {
-    // Luu duong link file anh vao thuoc tinh anh
-    req.body.thumbnail = `/uploads/${req.file.filename}`; // filename len ten multer tao cho anh khi upload
-  }
+  // console.log(req.file);
+  // if (req.file) {
+  //   // Luu duong link file anh vao thuoc tinh anh
+  //   req.body.thumbnail = `/uploads/${req.file.filename}`; // filename len ten multer tao cho anh khi upload
+  // }
   // Tao moi san pham nhung chua luu trong mongoo
   const product = new Product(req.body);
   // No se nhan du lieu tu form ng dung gui len va nam trong body
@@ -242,10 +242,10 @@ module.exports.editProduct = async (req, res) => {
   req.body.stock = parseInt(req.body.stock);
   req.body.discountPercentage = parseInt(req.body.discountPercentage);
   req.body.position = parseInt(req.body.position);
-  if (req.file) {
-    // Luu duong link file anh vao thuoc tinh anh
-    req.body.thumbnail = `/uploads/${req.file.filename}`; // filename len ten multer tao cho anh khi upload
-  }
+  // if (req.file) {
+  //   // Luu duong link file anh vao thuoc tinh anh
+  //   req.body.thumbnail = `/uploads/${req.file.filename}`; // filename len ten multer tao cho anh khi upload
+  // }
   try {
     // Lay ra san pham trung id, va cap nhat thong tin moi
     await Product.updateOne({ _id: req.params.id }, req.body);
