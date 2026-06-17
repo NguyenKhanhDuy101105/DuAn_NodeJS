@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer"); // Cai dat them phuong thuc de upload anh
 
 // Import Middleware upload Cloudinary vừa viết ở bước 1
-const uploadCloud = require("../../helpers/uploadCloud.middleware");
+const uploadCloud = require("../../middleware/admin/uploadCloud.middleware");
 const storageMulter = require("../../helpers/storageMulter");
 // const upload = multer({ storage: storageMulter() }); // Duong dan luu anh tai len
 const controllerProduct = require("../../controllers/admin/product_controller");
