@@ -5,6 +5,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug 
 include ../../mixins/filterDelete.pug 
 include ../../mixins/message-success.pug 
+include ../../mixins/sort.pug 
 block main
   .row.justify-content-between.align-items-center.mb-4
     .col-auto
@@ -29,6 +30,9 @@ block main
           +filterStatus(filterStatus)
         .col-6 
           +search(keyword)
+
+  //- Hien thi bo loc theo tieu chi
+  +sort()
 
   .card.shadow-sm.border-1.rounded-3
     .card-body.p-0

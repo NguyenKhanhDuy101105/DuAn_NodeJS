@@ -1,0 +1,17 @@
+mixin sort()
+    .card.mb-4 
+        .card-header Sap xep theo tieu chi
+        .card-body
+            .row
+                .col-6
+                    div(sort)
+                        select(class="form-control" name="sort" sort-select)
+                            option(disable selected) == Chon kieu sap xep ==
+                            option(value="position-desc") Vi tri giam dan
+                            option(value="position-asc") Vi tri tang dan
+                            option(value="price-desc") Gia giam dan
+                            option(value="price-asc") Gia tang dan
+                            option(value="title-asc") Tieu de A - Z
+                            option(value="title-desc") Tieu de Z- A
+                .col-6 
+                    buton(class="btn btn-danger" sort-clear) Xoa sap xep

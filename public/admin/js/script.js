@@ -262,3 +262,48 @@ if (uploadImage) {
     });
   }
 }
+
+// LOGIC SAP XEP THEO TIEU CHI
+// Lay ra cai select
+const selectSort = document.querySelector("select[name='sort']");
+// Kiem tra xem co ton tai ko
+if (selectSort) {
+  // Lay ra url hien tai cua web
+  let url = new URL(window.location.href);
+  // Lang nghe su kien option duoc chon trong select
+  selectSort.addEventListener("change", (e) => {
+    // Lay ra value cua the option do
+    const dive = e.target.value.split("-"); // luc dive la 1 mang 2 pham tu ["position","desc"]
+    // Dung destructing lay ra sortKey va sortValue
+    const [sortKey, sortValue] = dive;
+    // Cai key-value vao url hien tai
+    url.searchParams.set("sortKey", sortKey);
+    url.searchParams.set("sortValue", sortValue);
+    // Sau khi them thi di den url moi
+    window.location.href = url.href;
+  });
+
+  // Lay ra nut clear sap xep
+  const clearSort = document.querySelector("[sort-clear]");
+  if (clearSort) {
+    // Lang nghe su kien
+    clearSort.addEventListener("click", (e) => {
+      // Xoa sortKey va valueKey ra khoi url
+      url.searchParams.delete("sortKey");
+      url.searchParams.delete("sortValue");
+      // Sau khi them thi di den url moi
+      window.location.href = url.href;
+    });
+  }
+  // Them seleted = true cho option duoc chon
+  const sortKey = url.searchParams.get("sortKey");
+  const sortValue = url.searchParams.get("sortValue");
+
+  if (sortKey && sortValue) {
+    // Ghep gia tri
+    const value = `${sortKey}-${sortValue}`;
+    // Tim kiem the option theo gia tri value
+    const selectedOption = selectSort.querySelector(`option[value='${value}']`);
+    selectedOption.selected = true; // selected la thuoc tinh co san cua the option nen co the gan truc tiep, neu ko phai trung setAttribute
+  }
+}

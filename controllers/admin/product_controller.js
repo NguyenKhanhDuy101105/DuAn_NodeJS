@@ -32,6 +32,7 @@ module.exports.index = async (req, res) => {
     find.title = search.regex;
   }
 
+  console.log(req.query);
   // Panigation(Phan trang)
   const totalNumberProducts = await Product.countDocuments(find); // lay ra so luong tat ca san pham trong bang products
 
@@ -44,8 +45,18 @@ module.exports.index = async (req, res) => {
     totalNumberProducts,
   );
 
+  // Tao 1 doi tuong sort de sap xep theo lua chon
+  let sort = {};
+  // Kiem tra xem sau ? co sortKey va sortValue ko
+  if (req.query.sortKey && req.query.sortValue) {
+    sort[req.query.sortKey] = req.query.sortValue;
+  } else {
+    // Mac dinh la de no sap theo theo position: desc giam dan
+    sort.position = "desc";
+  }
+
   const products = await Product.find(find) // lay tat ca san pham trang thai chua bi xoa
-    .sort({ position: "desc" }) // sap xep giam dan theo vi tri position
+    .sort(sort) // sap xep giam dan theo vi tri position
     .limit(objectPagination.limitedItems) // limit(so san pham): chi lay theo so luong bao nhieu
     .skip(objectPagination.skip); // skip(so): bo qua bao bieu san pham roi moi bat dau lay
 
@@ -278,4 +289,5 @@ module.exports.getDetail = async (req, res) => {
 // req.query: tra ve Object chua cac gia tri cua cac bien sau dau ? cac cap key-value noi nhau bang dau &
 // req.query: Tác động lên cả danh sách (Lọc/Tìm/Phân trang)
 // req.body: tra ve Object chua cac gia tri dc gui len tu phia Client
-// req.body: Lấy toàn bộ dữ liệu nằm ẩn bên trong thân của Form hoặc gói tin dữ liệu gửi lên. Muốn lấy ô nào thì chỉ cần chấm tới thuộc tính name của ô đó (Ví dụ: req.body.type, req.body.ids).
+// req.body: Lấy toàn bộ dữ liệu nằm ẩn bên trong thân của Form hoặc gói tin dữ liệu gửi lên.
+//  Muốn lấy ô nào thì chỉ cần chấm tới thuộc tính name của ô đó (Ví dụ: req.body.type, req.body.ids).
