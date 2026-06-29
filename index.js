@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path"); // them tiny doc
 const methodOverride = require("method-override"); // Nhung cai ghi de phuong thuc POST
 const bodyParser = require("body-parser"); // Nhung cai de doc du lieu body Client gui request len
 const flash = require("express-flash"); // Nhung cai de hien thi thong bao sau khi chuyen huong
@@ -25,6 +26,12 @@ app.use(bodyParser.json());
 
 // Chuyển dòng này lên trên TRƯỚC KHI gọi các hàm Router
 app.use(methodOverride("_method"));
+
+// Serve TinyMCE files from node_modules
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce")),
+);
 
 // Cấu hình biến toàn cục cho Pug dùng chung
 app.locals.prefixAdmin = systemConfig.prefixAdmin;

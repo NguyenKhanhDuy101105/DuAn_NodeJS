@@ -1,0 +1,10 @@
+mixin tinymce(labelContent, id, name, rows = 5, value = "")
+  .form-group
+    if labelContent
+      label(for=id) #{labelContent}
+    textarea(
+      class="form-control textarea-mce"
+      id=id
+      name=name
+      rows=rows
+    ) #{value}
