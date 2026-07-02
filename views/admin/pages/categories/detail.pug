@@ -1,0 +1,83 @@
+extends ../../layouts/default.pug
+include ../../mixins/message-success.pug
+
+block main
+  //- Hiển thị thông báo nếu có
+  +message-success(3000)
+  +message-error(3000)
+
+  .container-fluid.py-4
+    .mb-4
+      a.btn.btn-outline-secondary.btn-sm(href=`${prefixAdmin}/categories`) 
+        i.fas.fa-arrow-left.me-1
+        | Trở về danh sách
+
+    .card.shadow-sm.border-0.rounded-3
+      .card-body.p-4
+        .row.g-4
+          //- 1. Bên trái: Khung hiển thị hình ảnh sản phẩm
+          .col-md-5.col-lg-4
+            if (category.thumbnail)
+              .ratio.ratio-4x3.border.rounded-3.overflow-hidden.bg-light
+                img(
+                  src=category.thumbnail 
+                  alt=category.title 
+                  style="object-fit: cover; width: 100%; height: 100%;"
+                )
+            else
+              .ratio.ratio-4x3.border.rounded-3.overflow-hidden.bg-light.d-flex.align-items-center.justify-content-center
+                span.text-muted Không có hình ảnh
+
+          //- 2. Bên phải: Khung hiển thị thông tin chi tiết
+          .col-md-7.col-lg-8.d-flex.flex-column.justify-content-between
+            div
+              //- Tiêu đề sản phẩm
+              if (category.title)
+                h1.mb-3.fw-bold.text-dark #{category.title}
+
+              //- Trạng thái hoạt động (Badge màu)
+              .mb-3
+                span.text-secondary.me-2 Trạng thái:
+                if (category.status === "active")
+                  span.badge.bg-success.bg-opacity-10.text-success.px-2.py-1 Hoạt động
+                else
+                  span.badge.bg-danger.bg-opacity-10.text-danger.px-2.py-1 Dừng hoạt độn
+                
+                if (category.position !== undefined)
+                  .col-6.col-md-4
+                    .p-2.bg-light.rounded-2
+                      small.text-muted.d-block Vị trí sắp xếp
+                      span.fw-semibold.text-dark ##{category.position}
+
+              //- Mô tả sản phẩm
+              if (category.description)
+                .mb-3
+                  h5.fw-bold.text-secondary.border-bottom.pb-2 Mô tả sản phẩm
+                  p.text-muted.lh-base(style="white-space: pre-line;") !{category.description}
+
+            //- 3. Dưới cùng bên phải: Các nút hành động nhanh
+            .d-flex.gap-2.mt-4.border-top.pt-3
+              a.btn.btn-warning.text-white.px-3(href=`${prefixAdmin}/categories/edit/${category.id}`)
+                i.fas.fa-edit.me-1
+                | Chỉnh sửa
+              
+              if (category.deleted)
+                a.btn.btn-primary.px-3(data-id=category.id button-restore) Khôi phục
+              else
+                a.btn.btn-danger.px-3(data-id=category.id buttonDelete) Xóa sản phẩm
+    //- Form de xoa san pham
+    form(
+        action=`` 
+        method="POST" 
+        id="form-delete-item" 
+        data-path=`${prefixAdmin}/categories/delete`
+        )
+    //- Form de khoi phuc san pham
+    form(
+        action=`` 
+        method="POST" 
+        id="form-restore-item" 
+        data-path=`${prefixAdmin}/categories/restore`
+        ) 
+ 
+  script(src="/admin/js/categories.js")

@@ -1,0 +1,55 @@
+extends ../../layouts/default.pug
+include ../../mixins/message-success.pug
+include ../../mixins/tinymce.pug
+include ../../mixins/select_tree.pug
+
+block main
+  +message-error(3000)
+
+  h1 Them moi san pham
+
+  form(
+    action =`${prefixAdmin}/categories/create`
+    id="form-create-category"
+    method="POST"
+    enctype="multipart/form-data"
+  ) 
+    .form-group.my-2 
+      label(for="title") Tieu de 
+      input(type="text" class="form-control" id="title" name="title")
+    
+    .form-group 
+      label(for="parent_id") Ma danh muc cha
+      select(name="parent_id" id="parent_id" class="form-control")
+        option(value=`` disable) == Chon danh muc cha ==
+        +select_tree(newList) 
+            
+        
+    +tinymce("Mô tả danh muc", "desc", "description", 5)
+
+    .form-group.my-2(upload-image) 
+      label(for="thumbnail") Anh
+      br
+      input(upload-image-input type="file" class="form-control-file" id="thumbnail" name="thumbnail" accept="image/*" )
+      br
+      .position-relative.d-inline-block.mt-2
+        img(upload-image-preview class="img-thumbnail" style="width: 300px; height: 200px; object-fit: cover;" src="" alt="")
+        //- Nút X mặc định ẩn đi bằng class d-none của Bootstrap
+        button.btn.btn-sm.btn-danger.position-absolute.top-0.end-0.m-1.d-none(type="button" btn-delete-preview) X
+
+
+    .form-group.my-2 
+      label(for="position") Vi tri
+      input(type="number" class="form-control" id="position" name="position" placeholder="Tu dong tang" min="1")
+
+    .form-group.my-2.form-check.form-check-inline 
+      input(type="radio" class="form-check-input" id="statusActive" name="status" value="active" checked)
+      label(for="statusActive" class="form-check-label") Hoat dong
+    .form-group.my-2.form-check.form-check-inline
+      input(type="radio" class="form-check-input" id="statusInactive" name="status" value="inactive")
+      label(for="statusInactive" class="form-check-label") Dung hoat dong
+
+    .form-group.my-2 
+      button.btn.btn-primary(type="submit") Tao moi 
+    
+    script(src="/admin/js/product.js")

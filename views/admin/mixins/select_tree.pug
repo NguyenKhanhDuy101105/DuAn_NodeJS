@@ -1,0 +1,6 @@
+mixin select_tree(newList, level = 1) 
+    each item in newList 
+        - const prefix = Array(level + 1).join("-- ")
+        option(value=`${item._id}`) #{prefix}#{item.title}
+        if(item.children && item.children.length > 0)
+            +select_tree(item.children, level + 1)

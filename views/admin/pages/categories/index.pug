@@ -1,0 +1,88 @@
+extends ../../layouts/default.pug
+include ../../mixins/filterStatus.pug 
+include ../../mixins/search.pug 
+include ../../mixins/pagination.pug 
+include ../../mixins/form-change-multi.pug 
+include ../../mixins/filterDelete.pug 
+include ../../mixins/message-success.pug 
+include ../../mixins/sort.pug 
+include ../../mixins/table-tree.pug 
+block main
+  .row.justify-content-between.align-items-center.mb-4
+    .col-auto
+      h1.mb-0.fw-bold.text-dark Danh sach danh muc san pham
+    .col-auto
+      a.btn.btn-outline-primary(href=`${prefixAdmin}/categories/create` btn-create) + Thêm mới danh muc
+
+  //- Hien thi thong bao
+  +message-success(5000)
+
+  .card.mb-4 
+    .card-header Trang thai xoa 
+    .card-body
+      .row
+        .col-6
+          +filterDelete(filterDelete)
+  .card.mb-4 
+    .card-header Bo loc va tim kiem 
+    .card-body
+      .row
+        .col-6
+          +filterStatus(filterStatus)
+        .col-6 
+          +search(keyword)
+
+  //- Hien thi bo loc theo tieu chi
+  +sort()
+
+  .card.shadow-sm.border-1.rounded-3
+    .card-body.p-0
+      //- Form thay doi trang thai nhieu san pham
+      +form-change-multi(`${prefixAdmin}/categories/change-multi?_method=PATCH`)
+      
+      .table-responsive
+        table.table.table-hover.align-middle.mb-0(checkbox-multi)
+          thead.table-light
+            tr
+              th
+                input(type="checkbox" name="checkall") 
+              th(style="width: 80px;") STT
+              th(style="width: 120px;") Hình ảnh
+              th Tiêu đề
+              th Mo ta
+              th Vi tri
+              th Trạng thái
+              th(style="width: 150px;") Hành động
+
+          tbody
+            +table-tree(categories)
+  //- Giao dien phan phan trang
+  +pagination(pagination)
+  //- Form thay doi trang thai 1 san pham
+  form(
+      action=`` 
+      method="POST" 
+      id="form-change-status" 
+      data-path=`${prefixAdmin}/categories/change-status`
+      ) 
+  //- Form de xoa san pham
+  form(
+      action=`` 
+      method="POST" 
+      id="form-delete-item" 
+      data-path=`${prefixAdmin}/categories/delete`
+      ) 
+  //- Form de khoi phuc san pham
+  form(
+      action=`` 
+      method="POST" 
+      id="form-restore-item" 
+      data-path=`${prefixAdmin}/categories/restore`
+      ) 
+
+  //- Nhung file js rieng xu ly chuyen trang thai san pham
+  script(src="/admin/js/categories.js") 
+  
+  
+        
+  

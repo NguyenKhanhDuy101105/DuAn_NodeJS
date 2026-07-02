@@ -307,3 +307,22 @@ if (selectSort) {
     selectedOption.selected = true; // selected la thuoc tinh co san cua the option nen co the gan truc tiep, neu ko phai trung setAttribute
   }
 }
+
+// LOGIC ACTIVE CHO SIDER
+const ul = document.querySelector("[navigation]");
+if (ul) {
+  const a = ul.querySelectorAll("li a"); // Danh sach cac the a
+  // dung foreach duyet cac the a so sanh gia tri href cua no
+  // co bang voi url hien tai ko neu co thi them active ko thi bo active
+  // Lay ra url hien tai cua web
+  let url = new URL(window.location.href); // url nay co thuoc tinh ten la pathname: "/admin/products" vay ta se lay thuoc tinh nay de so sanh
+  a.forEach((item) => {
+    const href = item.getAttribute("href"); // Lay ra cac gia tri cua thuoc tinh href cua the a
+    if (href == url.pathname) {
+      item.classList.add("active");
+    } else {
+      item.classList.remove("active");
+      item.classList.add("text-white");
+    }
+  });
+}

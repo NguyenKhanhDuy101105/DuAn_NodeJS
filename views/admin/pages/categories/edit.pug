@@ -1,0 +1,58 @@
+extends ../../layouts/default.pug
+include ../../mixins/message-success.pug
+
+block main
+  +message-error(3000)
+
+  h1 Chinh sua danh muc
+
+  form(
+    action =`${prefixAdmin}/products/edit/${category.id}?_method=PATCH`
+    id="form-create-product"
+    method="POST"
+    enctype="multipart/form-data"
+  ) 
+    .form-group.my-2 
+      label(for="title") Tieu de 
+      input(type="text" class="form-control" id="title" name="title" value=category.title)
+    
+    .form-group.my-2 
+      label(for="desc") Mo ta 
+      input(type="text" class="form-control" id="desc" name="description" rows="5" value=category.description)
+
+    .form-group(upload-image).my-2 
+      label(for="thumbnail") Ảnh
+      br
+      input(upload-image-input type="file" class="form-control-file" id="thumbnail" name="thumbnail" accept="image/*")
+      br
+      .position-relative.d-inline-block.mt-2
+        img(
+          upload-image-preview 
+          class="img-thumbnail" 
+          style="width: 300px; height: 200px; object-fit: cover;" 
+          src=category.thumbnail
+          alt="Ảnh sản phẩm"
+        )
+        button.btn.btn-sm.btn-danger.position-absolute.top-0.end-0.m-1(
+          type="button" 
+          btn-delete-preview 
+          class=(category.thumbnail ? "" : "d-none")
+        ) X
+
+      
+    .form-group.my-2
+      label(for="position") Vi tri
+      input(type="number" class="form-control" id="position" name="position" placeholder="Tu dong tang" min="1" value=category.position)
+
+    .form-group.form-check.form-check-inline.my-2 
+      input(type="radio" class="form-check-input" id="statusActive" name="status" value="active" checked=(category.status == "active" ? true:false))
+      label(for="statusActive" class="form-check-label") Hoat dong
+    
+    .form-group.form-check.form-check-inline.my-2
+      input(type="radio" class="form-check-input" id="statusInactive" name="status" value="inactive" checked=(category.status == "inactive" ? true:false))
+      label(for="statusInactive" class="form-check-label") Dung hoat dong
+
+    .form-group.my-2
+      button.btn.btn-primary(type="submit") Cap nhat
+    
+    script(src="/admin/js/categories.js")
