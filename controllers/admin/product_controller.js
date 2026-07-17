@@ -257,9 +257,17 @@ module.exports.createPost = async (req, res) => {
 module.exports.edit = async (req, res) => {
   try {
     var product = await Product.findById(req.params.id, { deleted: false });
+
+    var listCategories = await Category.find({
+      deleted: false,
+    });
+
+    let newList = createTree(listCategories);
+
     res.render("admin/pages/product/edit", {
-      titlePage: "Them moi san pham",
+      titlePage: "Chinh sua san pham",
       product: product,
+      newList: newList,
     });
   } catch (error) {
     res.redirect(`${systemConfig.prefixAdmin}/products`);
