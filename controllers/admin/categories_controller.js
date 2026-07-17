@@ -6,6 +6,7 @@ const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const filterDeleteHelper = require("../../helpers/filterDelete");
 const createTree = require("../../helpers/createTree");
+
 // [GET] /admin/categories
 module.exports.getAllCategories = async (req, res) => {
   // Goi chuc nang loc da dinh nghia ben Helper
@@ -115,10 +116,18 @@ module.exports.createPost = async (req, res) => {
 // [GET] /admin/categories/edit/:id => dan den form sua san pham
 module.exports.editGet = async (req, res) => {
   try {
+    let condition = {
+      deleted: false,
+    };
+
+    let listCategories = await Category.find(condition);
+    let newList = createTree(listCategories);
+
     var category = await Category.findById(req.params.id, { deleted: false });
     res.render("admin/pages/categories/edit", {
       titlePage: "Chinh sua danh muc",
       category: category,
+      newList: newList,
     });
   } catch (error) {
     res.redirect(`${systemConfig.prefixAdmin}/categories`);

@@ -5,6 +5,10 @@ mongoose.plugin(slug);
 // Tao Schema(luoc do) cho san pham
 const productSchema = new mongoose.Schema(
   {
+    product_category_id: {
+      type: String,
+      default: "",
+    },
     title: String,
     description: String,
     price: Number,

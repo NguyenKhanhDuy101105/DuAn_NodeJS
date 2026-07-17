@@ -1,6 +1,6 @@
-mixin select_tree(newList, level = 1) 
+mixin select_tree(newList, level = 1, parent_id = "") 
     each item in newList 
         - const prefix = Array(level + 1).join("-- ")
-        option(value=`${item._id}`) #{prefix}#{item.title}
+        option(value=`${item._id}` selected=(String(item._id) === String(parent_id) ? true:false)) #{prefix}#{item.title}
         if(item.children && item.children.length > 0)
-            +select_tree(item.children, level + 1)
+            +select_tree(item.children, level + 1, parent_id)

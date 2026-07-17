@@ -1,0 +1,13 @@
+mixin listCategories(list)
+    .card.mb-4 
+        .card-header Danh sach danh muc san pham
+        .card-body
+            .row
+                .col-6
+                    div()
+                        select(class="form-control" name="category_id" selected_category)
+                            option(disable selected) == Chon danh muc ==
+                            each item, index in list
+                                option(value=item._id) #{item.title}
+                .col-6 
+                    buton(class="btn btn-danger" deleted_category_id) Xoa loc theo danh muc        

@@ -26,7 +26,7 @@ router.post(
 );
 
 router.get("/edit/:id", controllerCateogries.editGet);
-router.post(
+router.patch(
   "/edit/:id",
   upload.single("thumbnail"), // 1. Đón file từ ô input (name="thumbnail")
   uploadCloud.upload, // 2. Chạy qua trung gian đẩy lên Cloudinary

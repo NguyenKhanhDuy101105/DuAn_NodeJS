@@ -326,3 +326,44 @@ if (ul) {
     }
   });
 }
+
+// LOGIC LOC SAN PHAM THEO DANH MUC
+// Lay ra cac select chua cac danh muc cha
+const select_category = document.querySelector("[selected_category]");
+if (select_category) {
+  // Lay url hien tai cua web
+  let url = new URL(window.location.href);
+  // Lang nghe su kien khi select thay doi gia tri
+  select_category.addEventListener("change", (e) => {
+    // Them 1 thuoc tinh moi len duong dan url
+    url.searchParams.set("selected_category", e.target.value);
+    // di den duong dan vua moi tao
+    window.location.href = url.href;
+  });
+
+  // LOGIC GIAO DIEN KHI CHON LOC SAN PHAM THEO DANH MUC CHA
+  let list_option = select_category.querySelectorAll("option");
+  // duyet qua tung phan tu trong danh sach cac option cua select
+  list_option.forEach((item) => {
+    // Lay gia tri cua thuoc tinh selected_category
+    let value = url.searchParams.get("selected_category");
+    // So sanh xem id cua option co trung voi gia tri khong neu co them thuoc tinh selected vao the option
+    if (value === item.value) {
+      item.setAttribute("selected", true); // item.selected = true;
+    }
+  });
+  // Lay ra nut xoa loc san pham theo danh muc
+  const deleted_category = document.querySelector("[deleted_category_id]");
+
+  if (deleted_category) {
+    // Lay nghe su kien no duoc click
+    deleted_category.addEventListener("click", (e) => {
+      // Lay url hien tai
+      let url = new URL(window.location.href);
+      // Xoa thuoc tinh selected_category tren url di
+      url.searchParams.delete("selected_category");
+      // Di den url sau khi xoa thuoc tinh selected_category
+      window.location.href = url.href;
+    });
+  }
+}

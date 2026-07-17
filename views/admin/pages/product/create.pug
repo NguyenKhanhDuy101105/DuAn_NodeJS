@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/message-success.pug
 include ../../mixins/tinymce.pug
+include ../../mixins/select_tree.pug
 
 block main
   +message-error(3000)
@@ -17,6 +18,12 @@ block main
       label(for="title") Tieu de 
       input(type="text" class="form-control" id="title" name="title")
     
+    .form-group 
+      label(for="product_category_id") Danh muc
+      select(name="product_category_id" id="product_category_id" class="form-control")
+        option(value=`` disable) == Chon danh muc ==
+        +select_tree(newList) 
+
     +tinymce("Mô tả sản phẩm", "desc", "description", 5)
     
     //- +tinymce("Noi dung", "content", "content", 5)

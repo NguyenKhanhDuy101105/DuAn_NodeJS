@@ -4,6 +4,8 @@ const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const filterDeleteHelper = require("../../helpers/filterDelete");
 const systemConfig = require("../../config/system");
+const createTree = require("../../helpers/createTree");
+const Category = require("../../models/category.model"); // Lay ra model Category de su dung
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -31,8 +33,11 @@ module.exports.index = async (req, res) => {
     // Cai search.regex la cai bien cua object cai ten ma minh nhap trong o nhap
     find.title = search.regex;
   }
+  // Doc su thay doi url cua web theo bien selected_category
+  if (req.query.selected_category) {
+    find.product_category_id = req.query.selected_category;
+  }
 
-  console.log(req.query);
   // Panigation(Phan trang)
   const totalNumberProducts = await Product.countDocuments(find); // lay ra so luong tat ca san pham trong bang products
 
@@ -60,12 +65,15 @@ module.exports.index = async (req, res) => {
     .limit(objectPagination.limitedItems) // limit(so san pham): chi lay theo so luong bao nhieu
     .skip(objectPagination.skip); // skip(so): bo qua bao bieu san pham roi moi bat dau lay
 
+  let listCategories = await Category.find({ deleted: false });
+
   res.render("admin/pages/product/index", {
     products: products,
     filterStatus: filter,
     filterDelete: deleteHeper,
     keyword: search.keyword,
     pagination: objectPagination,
+    list: listCategories,
   });
 };
 
@@ -189,10 +197,23 @@ module.exports.restoreItem = async (req, res) => {
 };
 
 // [GET] /admin/products/create => dan den form nhap
-module.exports.createGet = (req, res) => {
-  res.render("admin/pages/product/create", {
-    titlePage: "Them moi san pham",
-  });
+module.exports.createGet = async (req, res) => {
+  try {
+    let condition = {
+      deleted: false,
+    };
+
+    let listCategories = await Category.find(condition);
+    let newList = createTree(listCategories);
+
+    var category = await Category.findById(req.params.id, { deleted: false });
+    res.render("admin/pages/product/create", {
+      titlePage: "Them moi san pham",
+      newList: newList,
+    });
+  } catch (error) {
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
+  }
 };
 // [POST] /admin/products/${systemConfig.prefixAdmin}/products => gui du lieu len server
 module.exports.createPost = async (req, res) => {

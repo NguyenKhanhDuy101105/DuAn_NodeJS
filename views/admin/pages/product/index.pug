@@ -6,6 +6,8 @@ include ../../mixins/form-change-multi.pug
 include ../../mixins/filterDelete.pug 
 include ../../mixins/message-success.pug 
 include ../../mixins/sort.pug 
+include ../../mixins/listCategories.pug 
+
 block main
   .row.justify-content-between.align-items-center.mb-4
     .col-auto
@@ -15,6 +17,8 @@ block main
 
   //- Hien thi thong bao
   +message-success(5000)
+
+  +listCategories(list)
 
   .card.mb-4 
     .card-header Trang thai xoa 

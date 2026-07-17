@@ -1,5 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/message-success.pug
+include ../../mixins/tinymce.pug
+include ../../mixins/select_tree.pug
 
 block main
   +message-error(3000)
@@ -7,7 +9,7 @@ block main
   h1 Chinh sua danh muc
 
   form(
-    action =`${prefixAdmin}/products/edit/${category.id}?_method=PATCH`
+    action =`${prefixAdmin}/categories/edit/${category._id}?_method=PATCH`
     id="form-create-product"
     method="POST"
     enctype="multipart/form-data"
@@ -16,9 +18,13 @@ block main
       label(for="title") Tieu de 
       input(type="text" class="form-control" id="title" name="title" value=category.title)
     
-    .form-group.my-2 
-      label(for="desc") Mo ta 
-      input(type="text" class="form-control" id="desc" name="description" rows="5" value=category.description)
+    .form-group 
+      label(for="parent_id") Ma danh muc cha
+      select(name="parent_id" id="parent_id" class="form-control")
+        option(value=`` disable) == Chon danh muc cha ==
+        +select_tree(newList,1,category.parent_id) 
+
+    +tinymce("Mô tả danh muc", "desc", "description", 5, category.description)
 
     .form-group(upload-image).my-2 
       label(for="thumbnail") Ảnh

@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/message-success.pug
+include ../../mixins/tinymce.pug
 
 block main
   +message-error(3000)
@@ -16,9 +17,7 @@ block main
       label(for="title") Tieu de 
       input(type="text" class="form-control" id="title" name="title" value=product.title)
     
-    .form-group.my-2 
-      label(for="desc") Mo ta 
-      input(type="text" class="form-control" id="desc" name="description" rows="5" value=product.description)
+    +tinymce("Mô tả danh muc", "desc", "description", 5, product.description)
     
     .form-group.my-2 
       label(for="price") Gia
